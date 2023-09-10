@@ -1,0 +1,105 @@
+new_parse
+process version:0, version_count:1, state:1, row:0, col:0
+lex_internal state:0, row:0, column:0
+  consume character:'['
+lexed_lookahead sym:[, size:1
+shift state:9
+process version:0, version_count:1, state:9, row:0, col:1
+lex_internal state:1, row:0, column:1
+  consume character:'F'
+  consume character:'i'
+  consume character:'l'
+  consume character:'e'
+  consume character:'I'
+  consume character:'n'
+  consume character:'f'
+  consume character:'o'
+lexed_lookahead sym:section_name_token1, size:8
+shift state:12
+process version:0, version_count:1, state:12, row:0, col:9
+lex_internal state:0, row:0, column:9
+  consume character:']'
+lexed_lookahead sym:], size:1
+reduce sym:section_name, child_count:1
+shift state:2
+process version:0, version_count:1, state:2, row:0, col:10
+lex_internal state:2, row:0, column:10
+  skip character:10
+  consume character:'a'
+  consume character:'s'
+  consume character:'d'
+lexed_lookahead sym:key, size:4
+shift state:14
+process version:0, version_count:1, state:14, row:1, col:3
+lex_internal state:0, row:1, column:3
+  consume character:'='
+lexed_lookahead sym:=, size:1
+shift state:10
+process version:0, version_count:1, state:10, row:1, col:4
+lex_internal state:1, row:1, column:4
+  consume character:'a'
+  consume character:'s'
+  consume character:'d'
+lexed_lookahead sym:section_name_token1, size:3
+shift state:7
+process version:0, version_count:1, state:7, row:1, col:7
+lex_internal state:2, row:1, column:7
+  skip character:10
+  skip character:10
+  consume character:'['
+lexed_lookahead sym:[, size:3
+reduce sym:value, child_count:1
+reduce sym:statement, child_count:3
+reduce sym:section, child_count:4
+shift state:9
+process version:0, version_count:1, state:9, row:3, col:1
+lex_internal state:1, row:3, column:1
+  consume character:'D'
+  consume character:'e'
+  consume character:'v'
+  consume character:'i'
+  consume character:'c'
+  consume character:'e'
+  consume character:'I'
+  consume character:'n'
+  consume character:'f'
+  consume character:'o'
+lexed_lookahead sym:section_name_token1, size:10
+shift state:12
+process version:0, version_count:1, state:12, row:3, col:11
+lex_internal state:0, row:3, column:11
+  consume character:']'
+lexed_lookahead sym:], size:1
+reduce sym:section_name, child_count:1
+shift state:2
+process version:0, version_count:1, state:2, row:3, col:12
+lex_internal state:2, row:3, column:12
+  skip character:10
+  consume character:'a'
+  consume character:'s'
+  consume character:'d'
+lexed_lookahead sym:key, size:4
+shift state:14
+process version:0, version_count:1, state:14, row:4, col:3
+lex_internal state:0, row:4, column:3
+  consume character:'='
+lexed_lookahead sym:=, size:1
+shift state:10
+process version:0, version_count:1, state:10, row:4, col:4
+lex_internal state:1, row:4, column:4
+  consume character:'a'
+  consume character:'s'
+  consume character:'d'
+lexed_lookahead sym:section_name_token1, size:3
+shift state:7
+process version:0, version_count:1, state:7, row:4, col:7
+lex_internal state:2, row:4, column:7
+  skip character:10
+lexed_lookahead sym:end, size:1
+reduce sym:value, child_count:1
+reduce sym:statement, child_count:3
+reduce sym:section, child_count:4
+reduce sym:source_file_repeat1, child_count:2
+reduce sym:source_file, child_count:1
+accept
+done

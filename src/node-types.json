@@ -19,6 +19,11 @@
     }
   },
   {
+    "type": "section_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -53,19 +58,24 @@
     }
   },
   {
+    "type": "value",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "=",
     "named": false
   },
   {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
     "type": "key",
-    "named": true
-  },
-  {
-    "type": "section_name",
-    "named": true
-  },
-  {
-    "type": "value",
     "named": true
   }
 ]
