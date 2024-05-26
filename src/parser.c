@@ -1,7 +1,6 @@
-#include <tree_sitter/parser.h>
+#include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)
-#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
@@ -16,7 +15,7 @@
 #define MAX_ALIAS_SEQUENCE_LENGTH 4
 #define PRODUCTION_ID_COUNT 1
 
-enum {
+enum ts_symbol_identifiers {
   anon_sym_LBRACK = 1,
   anon_sym_RBRACK = 2,
   aux_sym_section_name_token1 = 3,
@@ -153,16 +152,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '=') ADVANCE(10);
       if (lookahead == '[') ADVANCE(4);
       if (lookahead == ']') ADVANCE(5);
-      if (lookahead == '\t' ||
-          lookahead == '\n' ||
-          lookahead == '\r' ||
-          lookahead == ' ') SKIP(0)
+      if (('\t' <= lookahead && lookahead <= '\r') ||
+          lookahead == ' ') SKIP(0);
       END_STATE();
     case 1:
-      if (lookahead == '\t' ||
-          lookahead == ' ') ADVANCE(6);
       if (lookahead == '\n' ||
-          lookahead == '\r') SKIP(1)
+          lookahead == '\r') SKIP(1);
+      if (('\t' <= lookahead && lookahead <= '\f') ||
+          lookahead == ' ') ADVANCE(6);
       if (lookahead != 0 &&
           lookahead != '[' &&
           lookahead != ']') ADVANCE(7);
@@ -170,10 +167,10 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 2:
       if (eof) ADVANCE(3);
       if (lookahead == '[') ADVANCE(4);
-      if (lookahead == '\t' ||
-          lookahead == ' ') ADVANCE(8);
       if (lookahead == '\n' ||
-          lookahead == '\r') SKIP(2)
+          lookahead == '\r') SKIP(2);
+      if (('\t' <= lookahead && lookahead <= '\f') ||
+          lookahead == ' ') ADVANCE(8);
       if (lookahead != 0 &&
           lookahead != '=' &&
           lookahead != ']') ADVANCE(9);
@@ -190,10 +187,11 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 6:
       ACCEPT_TOKEN(aux_sym_section_name_token1);
       if (lookahead == '\t' ||
+          lookahead == 0x0b ||
+          lookahead == '\f' ||
           lookahead == ' ') ADVANCE(6);
       if (lookahead != 0 &&
-          lookahead != '\n' &&
-          lookahead != '\r' &&
+          (lookahead < '\t' || '\r' < lookahead) &&
           lookahead != '[' &&
           lookahead != ']') ADVANCE(7);
       END_STATE();
@@ -208,10 +206,11 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
     case 8:
       ACCEPT_TOKEN(sym_key);
       if (lookahead == '\t' ||
+          lookahead == 0x0b ||
+          lookahead == '\f' ||
           lookahead == ' ') ADVANCE(8);
       if (lookahead != 0 &&
-          lookahead != '\n' &&
-          lookahead != '\r' &&
+          (lookahead < '\t' || '\r' < lookahead) &&
           lookahead != '=' &&
           lookahead != '[' &&
           lookahead != ']') ADVANCE(9);
@@ -369,27 +368,27 @@ static const uint32_t ts_small_parse_table_map[] = {
 static const TSParseActionEntry ts_parse_actions[] = {
   [0] = {.entry = {.count = 0, .reusable = false}},
   [1] = {.entry = {.count = 1, .reusable = false}}, RECOVER(),
-  [3] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_source_file, 0),
+  [3] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_source_file, 0, 0, 0),
   [5] = {.entry = {.count = 1, .reusable = true}}, SHIFT(9),
-  [7] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section, 3),
-  [9] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_section, 3),
+  [7] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section, 3, 0, 0),
+  [9] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_section, 3, 0, 0),
   [11] = {.entry = {.count = 1, .reusable = true}}, SHIFT(14),
-  [13] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section, 4),
-  [15] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_section, 4),
-  [17] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_section_repeat1, 2),
-  [19] = {.entry = {.count = 1, .reusable = false}}, REDUCE(aux_sym_section_repeat1, 2),
-  [21] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_section_repeat1, 2), SHIFT_REPEAT(14),
-  [24] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_source_file, 1),
-  [26] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_source_file_repeat1, 2),
-  [28] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_source_file_repeat1, 2), SHIFT_REPEAT(9),
-  [31] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_value, 1),
-  [33] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_value, 1),
-  [35] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_statement, 3),
-  [37] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_statement, 3),
+  [13] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section, 4, 0, 0),
+  [15] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_section, 4, 0, 0),
+  [17] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_section_repeat1, 2, 0, 0),
+  [19] = {.entry = {.count = 1, .reusable = false}}, REDUCE(aux_sym_section_repeat1, 2, 0, 0),
+  [21] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_section_repeat1, 2, 0, 0), SHIFT_REPEAT(14),
+  [24] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_source_file, 1, 0, 0),
+  [26] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_source_file_repeat1, 2, 0, 0),
+  [28] = {.entry = {.count = 2, .reusable = true}}, REDUCE(aux_sym_source_file_repeat1, 2, 0, 0), SHIFT_REPEAT(9),
+  [31] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_value, 1, 0, 0),
+  [33] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_value, 1, 0, 0),
+  [35] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_statement, 3, 0, 0),
+  [37] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_statement, 3, 0, 0),
   [39] = {.entry = {.count = 1, .reusable = true}}, SHIFT(12),
   [41] = {.entry = {.count = 1, .reusable = true}}, SHIFT(7),
   [43] = {.entry = {.count = 1, .reusable = true}},  ACCEPT_INPUT(),
-  [45] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section_name, 1),
+  [45] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_section_name, 1, 0, 0),
   [47] = {.entry = {.count = 1, .reusable = true}}, SHIFT(2),
   [49] = {.entry = {.count = 1, .reusable = true}}, SHIFT(10),
 };
@@ -397,11 +396,15 @@ static const TSParseActionEntry ts_parse_actions[] = {
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifdef _WIN32
-#define extern __declspec(dllexport)
+#ifdef TREE_SITTER_HIDE_SYMBOLS
+#define TS_PUBLIC
+#elif defined(_WIN32)
+#define TS_PUBLIC __declspec(dllexport)
+#else
+#define TS_PUBLIC __attribute__((visibility("default")))
 #endif
 
-extern const TSLanguage *tree_sitter_eds(void) {
+TS_PUBLIC const TSLanguage *tree_sitter_eds(void) {
   static const TSLanguage language = {
     .version = LANGUAGE_VERSION,
     .symbol_count = SYMBOL_COUNT,
