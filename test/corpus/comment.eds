@@ -1,0 +1,30 @@
+===============
+Comment section
+===============
+
+[Comment]
+Line1=Some comment
+
+---
+(source_file
+  (section
+    (section_name)
+    (statement
+      (key)
+      (value)
+    )
+  )
+)
+
+==============
+Comment with ;
+==============
+
+; some comment
+; some comment
+
+---
+(source_file
+  (comment)
+  (comment)
+)

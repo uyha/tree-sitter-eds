@@ -4,8 +4,17 @@
     "source_file": {
       "type": "REPEAT",
       "content": {
-        "type": "SYMBOL",
-        "name": "section"
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "section"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "comment"
+          }
+        ]
       }
     },
     "section": {
@@ -60,6 +69,10 @@
           "name": "value"
         }
       ]
+    },
+    "comment": {
+      "type": "PATTERN",
+      "value": ";.*"
     }
   },
   "extras": [
